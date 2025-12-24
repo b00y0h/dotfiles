@@ -157,8 +157,6 @@ fi
 
 
 # eval "$(starship init zsh)"
-# below isn't used typically when using warp terminal
-eval "$(oh-my-posh --init --shell zsh --config $(brew --prefix oh-my-posh)/themes/atomic.omp.json)"
 
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
