@@ -155,6 +155,40 @@ brew_install_cask 1password
 brew_install_cask font-hack-nerd-font
 
 ###############################################################################
+# Python Packages
+###############################################################################
+
+# Install pipx if not already installed
+if ! command -v pipx &>/dev/null; then
+    echo "Installing pipx..."
+    brew_install pipx
+    pipx ensurepath
+fi
+
+# Install Python CLI tools
+if command -v pipx &>/dev/null; then
+    if pipx list | grep -q pygments; then
+        echo "✓ pygments already installed"
+    else
+        echo "Installing pygments..."
+        pipx install pygments
+    fi
+fi
+
+###############################################################################
+# Oh My Zsh Plugins
+###############################################################################
+
+# Install pnpm plugin for oh-my-zsh
+PNPM_PLUGIN_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/pnpm"
+if [ -d "$PNPM_PLUGIN_DIR" ]; then
+    echo "✓ omz-plugin-pnpm already installed"
+else
+    echo "Installing omz-plugin-pnpm..."
+    git clone --depth=1 https://github.com/ntnyq/omz-plugin-pnpm.git "$PNPM_PLUGIN_DIR"
+fi
+
+###############################################################################
 # Cleanup
 ###############################################################################
 
