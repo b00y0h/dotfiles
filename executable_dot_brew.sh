@@ -41,7 +41,6 @@ brew install fzf              # Fuzzy finder
 brew install bat              # Better cat
 brew install eza              # Better ls
 brew install dust             # Better du
-brew install jandedobbeleer/oh-my-posh/oh-my-posh  # Prompt theme engine
 
 ###############################################################################
 # Git & Version Control
