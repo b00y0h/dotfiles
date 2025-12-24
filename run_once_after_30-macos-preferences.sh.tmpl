@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Apply macOS system preferences (optional)
+# This runs once after applying dotfiles
+
+set -e
+
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "🍎 macOS Preferences Setup"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+OSX_SCRIPT="{{ .chezmoi.homeDir }}/.osx"
+
+if [ ! -f "$OSX_SCRIPT" ]; then
+    echo "⚠️  .osx script not found, skipping"
+    exit 0
+fi
+
+echo ""
+echo "This will modify macOS system preferences including:"
+echo "  • UI/UX settings (menu bar, animations, etc.)"
+echo "  • Finder preferences"
+echo "  • Dock configuration"
+echo "  • Safari settings"
+echo "  • And more..."
+echo ""
+echo "⚠️  Requires sudo access and will restart some apps"
+echo ""
+
+# Check if we're in an interactive terminal
+if [ -t 0 ]; then
+    read -p "Apply macOS preferences now? (y/N) " -n 1 -r
+    echo ""
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "Skipped. Run '~/.osx' manually later if desired."
+        exit 0
+    fi
+else
+    # Non-interactive mode, skip
+    echo "Running in non-interactive mode, skipping macOS preferences."
+    echo "Run '~/.osx' manually later if desired."
+    exit 0
+fi
+
+chmod +x "$OSX_SCRIPT"
+"$OSX_SCRIPT"
+
+echo "✓ macOS preferences applied"
+echo "Note: Some changes require a logout/restart to take effect"

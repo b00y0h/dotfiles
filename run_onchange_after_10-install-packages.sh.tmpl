@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Install Homebrew packages from .brew.sh
+# This runs when .brew.sh content changes
+
+set -e
+
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "📦 Installing Homebrew packages..."
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+BREW_SCRIPT="{{ .chezmoi.homeDir }}/.brew.sh"
+
+if [ -f "$BREW_SCRIPT" ]; then
+    echo "⚠️  This may take 10-30 minutes on first run..."
+    echo ""
+
+    chmod +x "$BREW_SCRIPT"
+    "$BREW_SCRIPT"
+
+    echo "✓ Homebrew packages installed successfully"
+else
+    echo "⚠️  .brew.sh not found, skipping package installation"
+fi
+
+# Hash of .brew.sh to detect changes
+# {{ include "executable_dot_brew.sh" | sha256sum }}

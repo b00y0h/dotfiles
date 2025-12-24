@@ -1,0 +1,46 @@
+# Sensitive credential files - NEVER sync these
+.npmrc
+.netrc
+.git-credentials
+.aws/credentials
+.aws/config
+.ssh/id_rsa*
+.ssh/id_ed25519*
+.ssh/*.pub
+.ssh/known_hosts*
+.ssh/config*
+
+# API tokens and secrets
+.contentfulrc.json
+.serverlessrc
+.veracodeid
+.opencommit
+.claude.json
+.claude.json.backup
+
+# Machine-specific or auto-generated files
+.CFUserTextEncoding
+.DS_Store
+.lesshst
+.bash_history
+.node_repl_history
+.python_history
+.dbshell
+.mongorc.js
+.moodTable.json
+.rnd
+.autoenv_authorized
+
+# Application-specific that may contain tokens
+.yarnrc
+.bunfig.toml
+
+# Cache and temporary files
+.cache/
+.npm/
+.nvm/
+.pnpm-state/
+.atuin/
+
+# Old bare git repo
+.cfg/

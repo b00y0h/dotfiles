@@ -1,0 +1,73 @@
+[column]
+	ui = auto
+[branch]
+	sort = -committerdate
+[tag]
+	sort = version:refname
+[init]
+	defaultBranch = main
+[user]
+	email = reversetype@gmail.com
+	name = Bob Smith
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILLg1kX9p2rZw12ic+DuxOKSoFa8/a/MSFJNQarTRPSl
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[pull]
+	ff = only
+[core]
+	excludesfile = ~/.gitignore_global
+	pager = delta
+	excludesfile = ~/.gitignore
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	side-by-side = true
+[merge]
+	conflictstyle = diff3
+[diff]
+	algorithm = histogram
+	mnemonicPrefix = true
+	renames = true
+	colorMoved = plain
+[alias]
+	upstream = !git push -u origin HEAD
+	alias = ! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
+[credential]
+	helper = osxkeychain
+	helper = 
+	helper = /usr/local/share/gcm-core/git-credential-manager
+[gpg]
+  format = ssh
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+
+
+[credential "https://github.com"]
+	username = b00y0h
+[push]
+	autoSetupRemote = true
+	default = simple
+	followTags = true
+[fetch]
+	prune = true
+	pruneTags = true
+	all = true
+[help]
+	autocorrect = prompt
+[commit]
+	verbose = true
+  gpgsign = true
+[rerere]
+	enabled = true
+	autoupdate = true
+[rebase]
+	autoSquash = true
+	autoStash = true
+	updateRegs = true
+
+[credential "https://dev.azure.com"]
+	useHttpPath = true

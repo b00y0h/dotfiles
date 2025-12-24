@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# Set up additional development tools
+# This runs once after applying dotfiles
+
+set -e
+
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "🛠️  Setting up development tools..."
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+# Setup fzf key bindings if fzf is installed
+if command -v fzf >/dev/null 2>&1; then
+    echo "Setting up fzf..."
+    if [ ! -f "{{ .chezmoi.homeDir }}/.fzf.zsh" ]; then
+        FZF_PREFIX="$(brew --prefix fzf 2>/dev/null || echo "/opt/homebrew/opt/fzf")"
+        if [ -f "$FZF_PREFIX/install" ]; then
+            "$FZF_PREFIX/install" --key-bindings --completion --no-update-rc --no-bash --no-fish
+            echo "✓ fzf configured"
+        fi
+    else
+        echo "✓ fzf already configured"
+    fi
+fi
+
+# Clone fzf-git.sh for enhanced git commands
+if [ ! -d "{{ .chezmoi.homeDir }}/fzf-git.sh" ]; then
+    echo "Cloning fzf-git.sh..."
+    git clone https://github.com/junegunn/fzf-git.sh.git "{{ .chezmoi.homeDir }}/fzf-git.sh" 2>/dev/null || true
+    echo "✓ fzf-git.sh installed"
+else
+    echo "✓ fzf-git.sh already installed"
+fi
+
+# Import shell history to atuin if installed
+if command -v atuin >/dev/null 2>&1; then
+    if [ ! -d "{{ .chezmoi.homeDir }}/.local/share/atuin" ]; then
+        echo "Importing shell history to atuin..."
+        atuin import auto 2>/dev/null || true
+        echo "✓ atuin configured"
+    else
+        echo "✓ atuin already configured"
+    fi
+fi
+
+# Create necessary directories
+mkdir -p "{{ .chezmoi.homeDir }}/Screenshots"
+mkdir -p "{{ .chezmoi.homeDir }}/bin"
+
+echo "✓ Development tools configured"
