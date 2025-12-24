@@ -240,9 +240,12 @@ ZOXIDE_CMD_OVERRIDE=cd
 eval "$(zoxide init zsh)"
 
 alias cd="z"
-. "$HOME/.atuin/bin/env"
 
-eval "$(atuin init zsh)"
+# Initialize atuin if installed
+if [ -f "$HOME/.atuin/bin/env" ]; then
+  . "$HOME/.atuin/bin/env"
+  eval "$(atuin init zsh)"
+fi
 
 # pnpm
 export PNPM_HOME="/Users/BobbySmith/Library/pnpm"
@@ -276,7 +279,6 @@ agencyassets() {
     aws sso login --profile agency-assets-bucket
     aws s3 ls --profile agency-assets-bucket &>/dev/null # command to create aws cli cache entry
 }
-eval "$(rbenv init - zsh)"
 
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
 
