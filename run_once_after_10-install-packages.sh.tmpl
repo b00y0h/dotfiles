@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Install Homebrew packages from .brew.sh on first setup
+# This runs once on initial chezmoi apply
+
+set -e
+
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "📦 Installing Homebrew packages (first-time setup)..."
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+BREW_SCRIPT="{{ .chezmoi.homeDir }}/.brew.sh"
+
+if [ -f "$BREW_SCRIPT" ]; then
+    echo "⚠️  This may take 10-30 minutes on first run..."
+    echo ""
+
+    chmod +x "$BREW_SCRIPT"
+    "$BREW_SCRIPT"
+
+    echo "✓ Homebrew packages installed successfully"
+else
+    echo "⚠️  .brew.sh not found, skipping package installation"
+fi
