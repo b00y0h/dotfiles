@@ -127,6 +127,7 @@ brew install --cask raycast
 # Utilities
 brew install --cask git-credential-manager
 brew install --cask 1password-cli
+brew install --cask 1password
 # brew install --cask cscreen
 # brew install --cask discord
 
