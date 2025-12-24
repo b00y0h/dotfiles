@@ -19,12 +19,6 @@ else
 brew upgrade
 
 ###############################################################################
-# Taps
-###############################################################################
-
-brew tap homebrew/cask-fonts
-
-###############################################################################
 # Core Utilities
 ###############################################################################
 
@@ -33,6 +27,7 @@ brew install trash
 brew install tree
 brew install wget
 brew install mas              # Mac App Store CLI
+brew install atuin
 
 ###############################################################################
 # Shell & Terminal Enhancements
@@ -117,18 +112,17 @@ brew install ansiweather      # Weather in terminal
 ###############################################################################
 
 # Terminals
-brew install --cask ghostty
-brew install --cask warp
+# brew install --cask ghostty
+# brew install --cask warp
 
 # Development
-brew install --cask visual-studio-code
+# brew install --cask visual-studio-code
 brew install --cask claude-code
 # brew install --cask orbstack        # Docker alternative
 # brew install --cask local           # Local WordPress
 
 # Productivity
 brew install --cask raycast
-brew install --cask fig
 
 # Utilities
 brew install --cask git-credential-manager

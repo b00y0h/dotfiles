@@ -229,11 +229,6 @@ export BAT_THEME="Solarized (dark)"
 
 alias lll="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions --group-directories-first"
 
-# ---- TheF$ck -----
-
-# thef$ck alias
-eval $(thefuck --alias tf)
-
 # Use `zoxide` as `cd`
 ZOXIDE_CMD_OVERRIDE=cd
 
