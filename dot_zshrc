@@ -67,7 +67,7 @@ ZSH_CUSTOM=$HOME/.oh-my-zsh-custom
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git history-substring-search macos aws aliases alias-finder common-aliases docker-compose docker zoxide vscode web-search pnpm aws)
+plugins=(git history-substring-search macos aws aliases alias-finder common-aliases docker-compose docker zoxide vscode web-search pnpm chezmoi)
 # unused: terraform  z
 source $ZSH/oh-my-zsh.sh
 
