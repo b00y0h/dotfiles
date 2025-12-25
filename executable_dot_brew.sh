@@ -126,6 +126,7 @@ brew_install ffmpeg           # Video processing
 ###############################################################################
 
 brew_install ansiweather      # Weather in terminal
+brew_install pygments         # Syntax highlighting (needed for common-aliases plugin)
 
 ###############################################################################
 # GUI Applications (Casks)
@@ -153,27 +154,6 @@ brew_install_cask 1password
 
 # Fonts
 brew_install_cask font-hack-nerd-font
-
-###############################################################################
-# Python Packages
-###############################################################################
-
-# Install pipx if not already installed
-if ! command -v pipx &>/dev/null; then
-    echo "Installing pipx..."
-    brew_install pipx
-    pipx ensurepath
-fi
-
-# Install Python CLI tools
-if command -v pipx &>/dev/null; then
-    if pipx list | grep -q pygments; then
-        echo "✓ pygments already installed"
-    else
-        echo "Installing pygments..."
-        pipx install pygments
-    fi
-fi
 
 ###############################################################################
 # Oh My Zsh Plugins
