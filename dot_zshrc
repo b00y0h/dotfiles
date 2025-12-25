@@ -88,7 +88,7 @@ export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin"
 export PATH="/usr/local/bin:$PATH"
 
 # Add pnpm - if you need pnpm's node to be accessible, but after n. If you want n to always take precedence, you can comment these out.
-export PNPM_HOME="/Users/BobbySmith/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 
 
@@ -244,7 +244,7 @@ if [ -f "$HOME/.atuin/bin/env" ]; then
 fi
 
 # pnpm
-export PNPM_HOME="/Users/BobbySmith/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
 *":$PNPM_HOME:"*) ;;
 *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -252,7 +252,7 @@ esac
 # pnpm end
 
 # bun completions
-[ -s "/Users/BobbySmith/.bun/_bun" ] && source "/Users/BobbySmith/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 
 
@@ -279,7 +279,7 @@ agencyassets() {
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
 
 # Created by `pipx` on 2025-08-09 21:01:46
-export PATH="$PATH:/Users/BobbySmith/.local/bin"
+# Already added at top of file: export PATH="$HOME/.local/bin:$PATH"
 
 # Kill process listening on a specific port
 killport() {
