@@ -43,6 +43,22 @@ if command -v atuin >/dev/null 2>&1; then
     fi
 fi
 
+# Install global pnpm packages
+if command -v pnpm >/dev/null 2>&1; then
+    echo "Installing global pnpm packages..."
+
+    # Install Vercel CLI if not already installed
+    if ! command -v vercel >/dev/null 2>&1; then
+        echo "Installing Vercel CLI..."
+        pnpm i -g vercel
+        echo "✓ Vercel CLI installed"
+    else
+        echo "✓ Vercel CLI already installed"
+    fi
+else
+    echo "⚠️  pnpm not found, skipping global package installation"
+fi
+
 # Create necessary directories
 mkdir -p "{{ .chezmoi.homeDir }}/Screenshots"
 mkdir -p "{{ .chezmoi.homeDir }}/bin"
