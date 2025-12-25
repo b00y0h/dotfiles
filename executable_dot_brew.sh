@@ -180,7 +180,7 @@ fi
 ###############################################################################
 
 # Install pnpm plugin for oh-my-zsh
-PNPM_PLUGIN_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/pnpm"
+PNPM_PLUGIN_DIR="$HOME/.oh-my-zsh-custom/plugins/pnpm"
 if [ -d "$PNPM_PLUGIN_DIR" ]; then
     echo "✓ omz-plugin-pnpm already installed"
 else
