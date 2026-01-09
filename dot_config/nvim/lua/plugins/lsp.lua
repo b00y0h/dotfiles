@@ -22,6 +22,17 @@ return {
   },
 
   {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    dependencies = { "williamboman/mason.nvim" },
+    opts = {
+      ensure_installed = {
+        "prettierd",
+        "stylua",
+      },
+    },
+  },
+
+  {
     "antosha417/nvim-lsp-file-operations",
     event = "LspAttach",
     dependencies = {

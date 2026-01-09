@@ -26,6 +26,19 @@ return {
       }
 
       vim.api.nvim_create_autocmd({ 'User' }, {
+        pattern = "SessionLoadPre",
+        group = config_group,
+        callback = function()
+          -- Close all floating windows before loading session
+          for _, win in ipairs(vim.api.nvim_list_wins()) do
+            if vim.api.nvim_win_get_config(win).relative ~= "" then
+              pcall(vim.api.nvim_win_close, win, true)
+            end
+          end
+        end,
+      })
+
+      vim.api.nvim_create_autocmd({ 'User' }, {
         pattern = "SessionLoadPost",
         group = config_group,
         callback = function()

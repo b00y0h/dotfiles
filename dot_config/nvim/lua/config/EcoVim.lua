@@ -31,7 +31,7 @@ EcoVim = {
     },
     -- Completely replaces the UI for messages, cmdline and the popupmenu
     experimental_noice = {
-      enabled = true,
+      enabled = false, -- Incompatible with Neovim 0.11.x, waiting for upstream fix
     },
     -- Enables moving by subwords and skips significant punctuation with w, e, b motions
     jump_by_subwords = {

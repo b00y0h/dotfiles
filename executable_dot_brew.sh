@@ -48,6 +48,7 @@ brew_install tree
 brew_install wget
 brew_install mas              # Mac App Store CLI
 brew_install atuin
+brew install ripgrep
 
 ###############################################################################
 # Shell & Terminal Enhancements

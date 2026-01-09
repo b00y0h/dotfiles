@@ -9,7 +9,7 @@
 [user]
 	email = reversetype@gmail.com
 	name = Bob Smith
-  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILLg1kX9p2rZw12ic+DuxOKSoFa8/a/MSFJNQarTRPSl
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFG9y2qaU1PU58ZT8WZSPFIGvNGJxjXeRN22/rhnN1lO
 [filter "lfs"]
 	process = git-lfs filter-process
 	required = true

@@ -3,6 +3,9 @@ local silent = { silent = true }
 
 table.unpack = table.unpack or unpack -- 5.1 compatibility
 
+-- allow jj to get out of insert mode
+keymap("i", "jj", "<Esc>", { noremap = false })
+
 -- Fix moving forward in jumplist via <C-i>
 keymap("n", "<C-I>", "<C-I>", silent)
 
@@ -45,10 +48,10 @@ keymap("v", "X", '"_X', silent)
 keymap("v", "p", '"_dP', silent)
 
 -- Avoid issues because of remapping <c-a> and <c-x> below
-vim.cmd([[
+vim.cmd [[
   nnoremap <Plug>SpeedDatingFallbackUp <c-a>
   nnoremap <Plug>SpeedDatingFallbackDown <c-x>
-]])
+]]
 
 -- Quickfix
 keymap("n", "<Leader>,", ":cp<CR>", silent)
@@ -59,11 +62,15 @@ keymap("n", "<leader>q", "<cmd>lua require('utils').toggle_quicklist()<CR>", sil
 
 -- Manually invoke speeddating in case switch.vim didn't work
 keymap("n", "<C-a>", ":if !switch#Switch() <bar> call speeddating#increment(v:count1) <bar> endif<CR>", silent)
-keymap("n", "<C-x>", ":if !switch#Switch({'reverse': 1}) <bar> call speeddating#increment(-v:count1) <bar> endif<CR>",
-  silent)
+keymap(
+  "n",
+  "<C-x>",
+  ":if !switch#Switch({'reverse': 1}) <bar> call speeddating#increment(-v:count1) <bar> endif<CR>",
+  silent
+)
 
 -- Open links under cursor in browser with gx
-if vim.fn.has('macunix') == 1 then
+if vim.fn.has "macunix" == 1 then
   keymap("n", "gx", "<cmd>silent execute '!open ' . shellescape('<cWORD>')<CR>", silent)
 else
   keymap("n", "gx", "<cmd>silent execute '!xdg-open ' . shellescape('<cWORD>')<CR>", silent)
@@ -82,13 +89,13 @@ keymap("v", "<leader>cf", function()
   local start_row, _ = table.unpack(vim.api.nvim_buf_get_mark(0, "<"))
   local end_row, _ = table.unpack(vim.api.nvim_buf_get_mark(0, ">"))
 
-  vim.lsp.buf.format({
+  vim.lsp.buf.format {
     range = {
       ["start"] = { start_row, 0 },
       ["end"] = { end_row, 0 },
     },
     async = true,
-  })
+  }
 end, silent)
 keymap("n", "<leader>cl", "<cmd>lua vim.diagnostic.open_float({ border = 'rounded', max_width = 100 })<CR>", silent)
 keymap("n", "gl", "<cmd>lua vim.diagnostic.open_float({ border = 'rounded', max_width = 100 })<CR>", silent)
@@ -103,5 +110,9 @@ keymap("n", "K", function()
 end)
 
 -- Adjust font size
-keymap("n", "<M-=>", function() require('utils').adjust_font_size(1) end, silent)
-keymap("n", "<M-->", function() require('utils').adjust_font_size(-1) end, silent)
+keymap("n", "<M-=>", function()
+  require("utils").adjust_font_size(1)
+end, silent)
+keymap("n", "<M-->", function()
+  require("utils").adjust_font_size(-1)
+end, silent)

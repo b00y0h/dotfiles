@@ -14,17 +14,6 @@ return {
       explorer     = { enabled = true },
       picker       = {
         enabled = true,
-        explorer = {
-          opts = {
-            win = {
-              list = {
-                keys = {
-                  ["<c-]>"] = "explorer_cd",
-                }
-              }
-            }
-          }
-        },
         previewers = {
           git = {
             native = true, -- use native (terminal) or Neovim for previewing git diffs and commits
@@ -65,7 +54,7 @@ return {
       -- ╭─────────────────────────────────────────────────────────╮
       -- │ Picker                                                  │
       -- ╰─────────────────────────────────────────────────────────╯
-      { "<C-e>",       function() Snacks.picker.explorer() end,                                desc = "explorer" },
+      { "<C-e>",       function() Snacks.explorer.open() end,                                  desc = "explorer" },
       { "<C-p>",       function() Snacks.picker.smart() end,                                   desc = "smart files" },
       { "<S-p>",       function() Snacks.picker.grep() end,                                    desc = "grep" },
       { "<leader>pw",  function() Snacks.picker.grep_word() end,                               desc = "grep word",                   mode = { "n", "v" } },

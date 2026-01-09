@@ -6,7 +6,7 @@ return {
     cmd = "Copilot",
     event = "VeryLazy",
     opts = {
-      copilot_node_command = "/usr/local/bin/node",
+      copilot_node_command = "/opt/homebrew/bin/node",
       panel = { enabled = false, auto_refresh = true },
       suggestion = {
         enabled = false,

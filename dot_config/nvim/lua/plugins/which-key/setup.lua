@@ -140,6 +140,27 @@ wk.add({
 })
 
 wk.add({
+  { "<leader>u",  group = "UI" },
+  { "<leader>uc", "<cmd>set conceallevel=<C-R>=&conceallevel == 0 ? 2 : 0<CR><CR>", desc = "toggle conceal" },
+  { "<leader>ud", "<cmd>lua vim.diagnostic.enable(not vim.diagnostic.is_enabled())<CR>", desc = "toggle diagnostics" },
+  { "<leader>uh", "<cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>", desc = "toggle inlay hints" },
+  { "<leader>ul", "<cmd>set cursorline!<CR>", desc = "toggle cursorline" },
+  { "<leader>un", "<cmd>set number!<CR>", desc = "toggle line numbers" },
+  { "<leader>ur", "<cmd>set relativenumber!<CR>", desc = "toggle relative numbers" },
+  { "<leader>us", "<cmd>set spell!<CR>", desc = "toggle spelling" },
+  { "<leader>uw", "<cmd>set wrap!<CR>", desc = "toggle word wrap" },
+  { "<leader>ub", function()
+    if vim.o.background == "dark" then
+      vim.o.background = "light"
+    else
+      vim.o.background = "dark"
+    end
+  end, desc = "toggle background" },
+  { "<leader>uC", "<cmd>ColorizerToggle<CR>", desc = "toggle colorizer" },
+  { "<leader>uL", "<cmd>set cursorcolumn!<CR>", desc = "toggle cursorcolumn" },
+})
+
+wk.add({
   { "<leader>s", "<cmd>'<,'>sort<CR>", desc = "sort", mode = { "v" } }
 })
 
