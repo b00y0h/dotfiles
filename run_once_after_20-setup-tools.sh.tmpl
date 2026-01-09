@@ -59,6 +59,16 @@ else
     echo "⚠️  pnpm not found, skipping global package installation"
 fi
 
+# Clone oh-my-tmux if not already installed
+if [ ! -d "{{ .chezmoi.homeDir }}/.local/share/tmux/oh-my-tmux" ]; then
+    echo "Cloning oh-my-tmux..."
+    mkdir -p "{{ .chezmoi.homeDir }}/.local/share/tmux"
+    git clone https://github.com/gpakosz/.tmux.git "{{ .chezmoi.homeDir }}/.local/share/tmux/oh-my-tmux"
+    echo "✓ oh-my-tmux installed"
+else
+    echo "✓ oh-my-tmux already installed"
+fi
+
 # Create necessary directories
 mkdir -p "{{ .chezmoi.homeDir }}/Screenshots"
 mkdir -p "{{ .chezmoi.homeDir }}/bin"
