@@ -23,6 +23,9 @@
 .pgpass
 .my.cnf
 
+# Machine-local shell overrides (holds secrets; must never be synced)
+.zshrc.local
+
 # API tokens and secrets
 .contentfulrc.json
 .serverlessrc
@@ -34,6 +37,7 @@
 # Machine-specific or auto-generated files
 .CFUserTextEncoding
 .DS_Store
+**/.DS_Store
 .lesshst
 .bash_history
 .node_repl_history

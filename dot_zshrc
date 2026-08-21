@@ -1,8 +1,9 @@
 
 export TERM="xterm-256color"
 
-# Add pipx to PATH early (needed for plugins like common-aliases)
-export PATH="$HOME/.local/bin:$PATH"
+# XDG base directory (used by weathr, etc.)
+export XDG_CONFIG_HOME="$HOME/.config"
+
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -69,8 +70,12 @@ ZSH_CUSTOM=$HOME/.oh-my-zsh-custom
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git history-substring-search macos aws aliases alias-finder common-aliases docker-compose docker zoxide vscode web-search pnpm chezmoi)
+plugins=(git history-substring-search macos aws aliases alias-finder common-aliases docker-compose docker vscode web-search pnpm chezmoi)
 # unused: terraform  z
+# zoxide intentionally NOT a plugin: the omz plugin runs `zoxide init` here,
+# before _ZO_DOCTOR=0 is exported further down, which is what produced the
+# "possible configuration issue" warning on every command -- and it double-inits
+# with the explicit `eval "$(zoxide init zsh)"` below. Initialized there only.
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -84,12 +89,10 @@ zstyle ':omz:plugins:alias-finder' cheaper yes # disabled by default
 # User configurations
 
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin"
-export PATH="/usr/local/bin:$PATH"
 
-# Add pnpm - if you need pnpm's node to be accessible, but after n. If you want n to always take precedence, you can comment these out.
-export PNPM_HOME="$HOME/Library/pnpm"
-export PATH="$PNPM_HOME:$PATH"
 
+# Cargo/Rust
+export PATH="$HOME/.cargo/bin:$PATH"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
@@ -104,15 +107,13 @@ export PATH="/opt/homebrew/opt/python@3.12/libexec/bin:$PATH"
 
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.vim/plugged:$PATH"
-export PATH=~/.console-ninja/.bin:$PATH
-
-export PATH="/usr/local/bin:$PATH"
-
 
 # source  $ZSH_CUSTOM/proxies.zsh
 source $ZSH_CUSTOM/zshrc-custom.zsh
 
 source $ZSH_CUSTOM/antigen.zsh
+
+export PATH="$HOME/.local/bin:$PATH"
 
 # Load the oh-my-zsh's library.
 antigen use oh-my-zsh
@@ -125,6 +126,7 @@ antigen bundle command-not-found
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-completions
 antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle sobolevn/wakatime-zsh-plugin
 
 # autocomplete plugins
 
@@ -165,7 +167,7 @@ if command -v pyenv 1>/dev/null 2>&1; then
 fi
 
 
-PATH=~/.console-ninja/.bin:$PATH
+
 
 # Add fzf key bindings and fuzzy commpletion
 source <(fzf --zsh)
@@ -230,11 +232,31 @@ export BAT_THEME="Solarized (dark)"
 alias lll="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions --group-directories-first"
 
 # Use `zoxide` as `cd`
-ZOXIDE_CMD_OVERRIDE=cd
+# (ZOXIDE_CMD_OVERRIDE removed -- it was only read by the omz zoxide plugin,
+# which loads ~160 lines earlier, so it was already unset by then and did nothing.)
 
+export _ZO_DOCTOR=0
 eval "$(zoxide init zsh)"
 
-alias cd="z"
+# zoxide-backed `cd` that never GUESSES at a path-shaped argument.
+#
+# `alias cd="z"` was unsafe: zoxide's z only does a plain cd when the argument is
+# an existing directory -- otherwise it falls through to a frecency query. So a
+# relative path that doesn't resolve from the current directory (typo, or simply
+# being in a different checkout than you assumed) did NOT fail. It silently
+# teleported to the most-visited similarly-named directory and returned exit 0,
+# which let `cd apps/foo && git rm ...` run against the wrong repo entirely.
+#
+# Bare keywords still get the frecency jump (`cd meridian`). Anything that looks
+# like a path -- contains "/", or starts with "." "~" "-" -- goes to builtin cd
+# and fails loudly when it doesn't exist, so `&&` chains short-circuit correctly.
+cd() {
+  if (( $# != 1 )) || [[ "$1" == -* || "$1" == */* || "$1" == .* || "$1" == ~* || -d "$1" ]]; then
+    builtin cd "$@"
+  else
+    __zoxide_z "$1"
+  fi
+}
 
 # Initialize atuin if installed
 if [ -f "$HOME/.atuin/bin/env" ]; then
@@ -275,10 +297,8 @@ agencyassets() {
     aws s3 ls --profile agency-assets-bucket &>/dev/null # command to create aws cli cache entry
 }
 
-[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
 
 # Created by `pipx` on 2025-08-09 21:01:46
-# Already added at top of file: export PATH="$HOME/.local/bin:$PATH"
 
 # Kill process listening on a specific port
 killport() {
@@ -321,9 +341,41 @@ killport() {
 }
 
 
-# Kiro CLI post block. Keep at the bottom of this file.
-[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
-[[ -f "$HOME/.config/op/plugins.sh" ]] && source "$HOME/.config/op/plugins.sh"
+
+# disabled-1password: [[ -f "$HOME/.config/op/plugins.sh" ]] && source "$HOME/.config/op/plugins.sh"
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 export PATH="/opt/homebrew/lib/ruby/gems/4.0.0/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
+
+alias lsf="ls -alF"
+# disabled-1password: source /Users/BobbySmith/.config/op/plugins.sh
+unalias gsd 2>/dev/null
+export GSD_CLAUDE_CODE_PERMISSION_MODE=acceptEdits
+
+# export CLAUDE_CODE_USE_BEDROCK=1
+export AWS_REGION=us-east-1
+# Machine-local secrets and per-machine overrides (untracked; see ~/.zshrc.local)
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+
+# ── Node version management via n (auto-switch per project .node-version) ──
+export N_PREFIX="/usr/local"
+_n_auto_switch() {
+  emulate -L zsh
+  local f v cur
+  for f in .node-version .nvmrc; do
+    [[ -r $f ]] || continue
+    v=$(<"$f"); v=${v//[$' \t\r\nv']/}; break
+  done
+  [[ -n $v ]] || return
+  cur=$(command node -v 2>/dev/null); cur=${cur#v}
+  [[ $cur == $v ]] && return
+  if [[ -x $N_PREFIX/n/versions/node/$v/bin/node ]]; then
+    n "$v" >/dev/null 2>&1
+  else
+    print -P "%F{yellow}node $v required by this project (.node-version) — run: n install $v%f"
+  fi
+}
+autoload -U add-zsh-hook
+add-zsh-hook chpwd _n_auto_switch
+_n_auto_switch
+export PATH="/opt/homebrew/sbin:$PATH"
+
