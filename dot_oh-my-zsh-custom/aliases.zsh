@@ -139,3 +139,11 @@ killp() {
         return 1
     fi
 }
+
+# Refresh the chezmoi-tracked Brewfile after installing/removing packages.
+# Keeps the Brewfile from drifting the way the old .brew.sh script did.
+brewdump() {
+    brew bundle dump --file="$HOME/Brewfile" --force && \
+    chezmoi re-add "$HOME/Brewfile" && \
+    echo "✓ Brewfile refreshed and re-added to chezmoi — commit when ready"
+}

@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Install Homebrew packages from the Brewfile.
+#
+# This is a run_onchange_ script: chezmoi re-runs it whenever the Brewfile
+# changes, so a package added on one machine lands on the others at next apply.
+# `brew bundle` is idempotent — already-installed packages are skipped.
+#
+# Regenerate the Brewfile after installing/removing packages:
+#     brew bundle dump --file=~/Brewfile --force && chezmoi re-add ~/Brewfile
+#
+# Brewfile hash: {{ include "Brewfile" | sha256sum }}
+
+set -uo pipefail
+
+BREWFILE="{{ .chezmoi.homeDir }}/Brewfile"
+
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "📦 Installing Homebrew packages from Brewfile..."
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+if ! command -v brew >/dev/null 2>&1; then
+    echo "⚠️  Homebrew not on PATH, skipping (see 01-install-homebrew.sh)"
+    exit 0
+fi
+
+if [ ! -f "$BREWFILE" ]; then
+    echo "⚠️  $BREWFILE not found, skipping"
+    exit 0
+fi
+
+echo "⚠️  A first run may take 10-30 minutes..."
+echo ""
+
+if brew bundle --file="$BREWFILE"; then
+    echo "✓ Homebrew packages installed successfully"
+else
+    echo "⚠️  Some packages failed to install — review the output above."
+    echo "    Re-run manually with: brew bundle --file=\"$BREWFILE\""
+fi
