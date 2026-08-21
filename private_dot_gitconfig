@@ -9,7 +9,7 @@
 [user]
 	email = reversetype@gmail.com
 	name = Bob Smith
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFG9y2qaU1PU58ZT8WZSPFIGvNGJxjXeRN22/rhnN1lO
+	signingkey = /Users/BobbySmith/.ssh/ssh_key_mbp
 [filter "lfs"]
 	process = git-lfs filter-process
 	required = true
@@ -43,7 +43,7 @@
 [gpg]
   format = ssh
 [gpg "ssh"]
-  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+	allowedSignersFile = /Users/BobbySmith/.ssh/allowed_signers
 
 
 [credential "https://github.com"]
@@ -68,6 +68,12 @@
 	autoSquash = true
 	autoStash = true
 	updateRegs = true
-
+[includeIf "hasconfig:remote.*.url:git@gitlab.devops.eab.com:*/**"]
+	path = /Users/BobbySmith/.gitconfig-eab
+[includeIf "hasconfig:remote.*.url:https://gitlab.devops.eab.com/**"]
+	path = /Users/BobbySmith/.gitconfig-eab
 [credential "https://dev.azure.com"]
 	useHttpPath = true
+[credential "https://gitlab.devops.eab.com"]
+	provider = generic
+	helper = osxkeychain

@@ -96,3 +96,46 @@ play-airhorn() {
 journal() {
     dayone2 new "$1" -t hourly "$2"
 }
+
+# kill process on a given port, range, or comma-separated list
+# Usage: killp 4001          — single port
+#        killp 4000-4004     — range
+#        killp 4001,4003,6379 — comma-separated
+#        killp 4000-4004,6379 — mix of both
+killp() {
+    if [ -z "$1" ]; then
+        echo "Usage: killp <port|range|list>"
+        echo "  killp 4001"
+        echo "  killp 4000-4004"
+        echo "  killp 4001,4003,6379"
+        echo "  killp 4000-4004,6379"
+        return 1
+    fi
+    local ports=()
+    # split on commas, then expand ranges
+    for part in ${(s:,:)1}; do
+        if [[ "$part" == *-* ]]; then
+            local lo=${part%%-*}
+            local hi=${part##*-}
+            for p in $(seq "$lo" "$hi"); do
+                ports+=("$p")
+            done
+        else
+            ports+=("$part")
+        fi
+    done
+    local any_killed=0
+    for port in "${ports[@]}"; do
+        local pids
+        pids=$(lsof -ti :"$port" 2>/dev/null)
+        if [ -n "$pids" ]; then
+            echo "$pids" | xargs kill -9
+            echo "Killed on port $port: $pids"
+            any_killed=1
+        fi
+    done
+    if [ "$any_killed" -eq 0 ]; then
+        echo "No processes found on port(s): ${ports[*]}"
+        return 1
+    fi
+}

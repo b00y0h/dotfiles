@@ -378,4 +378,3 @@ autoload -U add-zsh-hook
 add-zsh-hook chpwd _n_auto_switch
 _n_auto_switch
 export PATH="/opt/homebrew/sbin:$PATH"
-
