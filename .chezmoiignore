@@ -4,11 +4,24 @@
 .git-credentials
 .aws/credentials
 .aws/config
-.ssh/id_rsa*
-.ssh/id_ed25519*
-.ssh/*.pub
-.ssh/known_hosts*
-.ssh/config*
+# .ssh: deny-by-default. Name-pattern rules (id_rsa*, id_ed25519*) miss any
+# key with a custom name, so ignore the whole tree and re-allow explicitly.
+.ssh/**
+!.ssh/sockets
+
+# Credential stores for CLIs that write tokens to disk in plaintext
+.config/gh/hosts.yml
+.config/glab-cli/**
+.kube/**
+.docker/config.json
+.gnupg/**
+.password-store/**
+.config/op/**
+.terraform.d/credentials.tfrc.json
+.databricks-cfg
+.snowflake/**
+.pgpass
+.my.cnf
 
 # API tokens and secrets
 .contentfulrc.json
